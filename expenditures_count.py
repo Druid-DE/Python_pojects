@@ -8,7 +8,7 @@ categories = {
 def get_expenditures(category_key):
     """Запрашивает расходы по категории и возвращает список чисел"""
     try:
-        data = input(f'Введите расходы на {categories[category_key]}: ').split()
+        data = input(f'Введите расходы на {categories[category_key]}: ').split(',')
         return list(map(int, data))
     except ValueError:
         print(f"❌ Ошибка: введите числа для категории '{categories[category_key]}'")
