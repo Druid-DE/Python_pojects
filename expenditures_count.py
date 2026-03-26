@@ -3,33 +3,46 @@ categories = {
     'products': 'продукты',
     'entertainment': 'развлечения'
 }
-def get_expenditures(category_name):
+
+
+def get_expenditures(category_key):
+    """Запрашивает расходы по категории и возвращает список чисел"""
     try:
-        expenditures = input(f'Введите расходы на {categories[category_name]}: ').split()
-        return list(map(int, expenditures))
+        data = input(f'Введите расходы на {categories[category_key]}: ').split()
+        return list(map(int, data))
     except ValueError:
-        print(f"❌ Ошибка: введите числа для категории '{categories[category_name]}'")
+        print(f"❌ Ошибка: введите числа для категории '{categories[category_key]}'")
         return []
 
-req = get_expenditures('required')
-prod = get_expenditures('products')
-ent = get_expenditures('entertainment')
 
+def main():
+    # Собираем данные
+    expenses = {key: get_expenditures(key) for key in categories}
 
-all_exp= int(sum(req) + sum(prod) + sum(ent))
-expenditures_limit = input('Введите лимит расходов:')
-try:
+    # Получаем лимит
+    try:
+        limit = int(input('Введите лимит расходов: '))
+    except ValueError:
+        print("❌ Ошибка: лимит должен быть числом!")
+        return
+
+    # Считаем итоги
+    total = sum(sum(vals) for vals in expenses.values())
+
+    # Выводим отчёт
     print("\n📊 Отчёт по расходам:")
     print("-" * 50)
-    print(f'Обязательные расходы: {sum(req)} рублей.')
-    print(f'Расходы на продукты: {sum(prod)} рублей.')
-    print(f'Расходы на развлечения: {sum(ent)} рублей.')
+    for key, name in categories.items():
+        print(f'{name.capitalize()}: {sum(expenses[key])} рублей.')
     print("-" * 50)
-    print(f'Общие расходы: {all_exp} рублей.')
-    print(f'Лимит: {expenditures_limit} рублей.')
-    if all_exp < int(expenditures_limit):
-        print(f'Вы сэкономили {int(expenditures_limit) - all_exp} рублей!')
+    print(f'Общие расходы: {total} рублей.')
+    print(f'Лимит: {limit} рублей.')
+
+    if total <= limit:
+        print(f'✅ Вы уложились в бюджет! Остаток: {limit - total} рублей.')
     else:
-        print(f'Лимит расходов превышен на {all_exp - int(expenditures_limit)} рублей!')
-except ValueError:
-    print(f"❌ Ошибка: введите числовое значение для категории '{expenditures_limit}'")
+        print(f'❌ Превышение бюджета на {total - limit} рублей!')
+
+
+if __name__ == "__main__":
+    main()
