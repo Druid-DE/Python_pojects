@@ -30,7 +30,7 @@ for employee in employees:
 print("\n📊 Отчёт по зарплате:")
 print("-" * 50)
 for employee in employees:
-    print(f'{employee['name']}: {employee["full_salary"]} ₽')
+    print(f'{employee["name"]}: {employee["full_salary"]} ₽')
 print("-" * 50)
 total_payroll = sum(employee['full_salary'] for employee in employees)
 avg_salary = total_payroll / len(employees)
