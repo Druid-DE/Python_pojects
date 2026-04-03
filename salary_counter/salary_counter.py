@@ -38,6 +38,7 @@ def main():
     print(f'Общий фонд зарплаты: {total_payroll} ₽')
     print("-" * 50)
     print(f'Средняя зарплата: {avg_salary} ₽')
+
     with open('salary_report.txt', 'w', encoding='utf-8') as f:
         f.write("📊 Отчёт по зарплате:\n")
         f.write("-" * 50 + "\n")
