@@ -15,6 +15,7 @@ employees = [
     {'name': 'Ольга', 'salary': 30000, 'department': 'business'},
     {'name': 'Алёна', 'salary': 20000, 'department': 'hr'},
 ]
+
 def main():
     bonus = 0
     for employee in employees:
