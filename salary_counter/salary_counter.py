@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 def main():
     # Загружаем из CSV
     df = pd.read_csv('test_data.csv')
