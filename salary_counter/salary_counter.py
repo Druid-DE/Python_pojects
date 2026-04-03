@@ -1,52 +1,39 @@
-def check_salary(department):
-    if department == 'it':
-        return 15000
-    elif department == 'hr':
-        return 10000
-    elif department == 'business':
-        return 20000
-    else:
-        return 0
+import pandas as pd
 
-employees = [
-    {'name': 'Иван', 'salary': 25000, 'department': 'it'},
-    {'name': 'Алексей', 'salary': 20000, 'department': 'hr'},
-    {'name': 'Михаил', 'salary': 25000, 'department': 'it'},
-    {'name': 'Ольга', 'salary': 30000, 'department': 'business'},
-    {'name': 'Алёна', 'salary': 20000, 'department': 'hr'},
-]
 
 def main():
-    bonus = 0
-    for employee in employees:
+    # Загружаем из CSV
+    df = pd.read_csv('test_data.csv')
+
+    # Вводим бонусы
+    for idx, row in df.iterrows():
         while True:
             try:
-                bonus = int(input(f'Введите бонус {employee["name"]}: '))
+                bonus = int(input(f"Бонус для {row['name']}: "))
+                df.loc[idx, 'bonus'] = bonus
                 break
             except ValueError:
-                print("❌ Бонус должен быть числом!")
-        award = check_salary(employee["department"])
-        employee['full_salary'] = employee["salary"] + award + bonus
+                print("❌ Введите число!")
 
-    print("\n📊 Отчёт по зарплате:")
-    print("-" * 50)
-    for employee in employees:
-        print(f"{employee['name']}: {employee['full_salary']:,} ₽")
-    print("-" * 50)
-    total_payroll = sum(employee['full_salary'] for employee in employees)
-    avg_salary = total_payroll / len(employees)
-    print(f'Общий фонд зарплаты: {total_payroll} ₽')
-    print("-" * 50)
-    print(f'Средняя зарплата: {avg_salary} ₽')
+    # Считаем премии
+    df['award'] = df['department'].map({
+        'it': 15000,
+        'hr': 10000,
+        'business': 20000
+    }).fillna(0)
 
-    with open('salary_report.txt', 'w', encoding='utf-8') as f:
-        f.write("📊 Отчёт по зарплате:\n")
-        f.write("-" * 50 + "\n")
-        for employee in employees:
-            f.write(f"{employee['name']}: {employee['full_salary']} ₽\n")
-        f.write("-" * 50 + "\n")
-        f.write(f"Общий фонд: {total_payroll} ₽\n")
-        f.write(f"Средняя зарплата: {avg_salary} ₽\n")
-    print("✅ Отчёт сохранён в salary_report.txt")
+    # Итоговая зарплата
+    df['full_salary'] = df['salary'] + df['award'] + df['bonus']
+
+    # Отчёт
+    print("\n📊 Отчёт:")
+    print(df[['name', 'full_salary']].to_string(index=False))
+    print(f"\nОбщий фонд: {df['full_salary'].sum():,} ₽")
+
+    # Сохраняем
+    df.to_csv('salary_report.csv', index=False)
+    print("✅ Сохранено в salary_report.csv")
+
+
 if __name__ == "__main__":
     main()
