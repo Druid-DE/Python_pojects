@@ -48,6 +48,5 @@ def main():
     df.to_csv('salary_report.csv', index=False, encoding='utf-8-sig')
     print("✅ Отчёт сохранён в salary_report.csv")
 
-
 if __name__ == "__main__":
     main()
